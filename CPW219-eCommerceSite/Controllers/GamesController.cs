@@ -1,6 +1,7 @@
 ﻿using CPW219_eCommerceSite.Data;
 using CPW219_eCommerceSite.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace CPW219_eCommerceSite.Controllers
@@ -51,6 +52,19 @@ namespace CPW219_eCommerceSite.Controllers
                 return NotFound();
             }
             return View(gameToEdit);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Game gameModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Games.Update(gameModel);
+                await _context.SaveChangesAsync();
+                
+                return RedirectToAction("Index");
+            }
+            return View(gameModel);
         }
     }
 }
