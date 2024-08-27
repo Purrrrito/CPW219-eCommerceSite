@@ -22,6 +22,10 @@ namespace CPW219_eCommerceSite.Controllers
 
             int currPage = id ?? 1; // Set currPage to id if it has a value, otherwise use 1
 
+            int totalNumOfProducts = await _context.Games.CountAsync();
+            double maxNumPages = Math.Ceiling((double)totalNumOfProducts / NumGamesToDisplayPerPage);
+            int lastPage = Convert.ToInt32(maxNumPages); // Rounding pages up, to next whole page number
+
             // Commented out the method syntax version, same code below as query syntax
             // List<Game> games = _context.Games.ToList();
             List<Game> games = await (from game in _context.Games
@@ -30,7 +34,8 @@ namespace CPW219_eCommerceSite.Controllers
                                       .Take(NumGamesToDisplayPerPage)
                                       .ToListAsync();
 
-            return View(games);
+            GameCatalogViewModel catalogModel = new(games, lastPage, currPage);
+            return View(catalogModel);
         }
 
         [HttpGet]
