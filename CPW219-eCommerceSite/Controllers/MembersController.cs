@@ -61,6 +61,7 @@ namespace CPW219_eCommerceSite.Controllers
                 // If exists, send to homepage
                 if (m != null)
                 {
+                    HttpContext.Session.SetString("Email", loginModel.Email);
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -68,6 +69,6 @@ namespace CPW219_eCommerceSite.Controllers
             }
             // Return page if no record found, or ModelState is invalid
             return View(loginModel);
-    }
+        }
     }
 }
