@@ -11,9 +11,9 @@ namespace CPW219_eCommerceSite.Models
 
         public string Password { get; set; }
 
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
-        public string Username { get; set; }
+        public string? Username { get; set; }
     }
 
     public class RegisterViewModel
