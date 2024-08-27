@@ -15,9 +15,20 @@ namespace CPW219_eCommerceSite.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            List<Game> games = await _context.Games.ToListAsync();
+            const int NumGamesToDisplayPerPage = 3;
+            const int PageOffSet = 1; // Need a page offset to use current page and figure out, num games to skip
+
+            int currPage = id ?? 1; // Set currPage to id if it has a value, otherwise use 1
+
+            // Commented out the method syntax version, same code below as query syntax
+            // List<Game> games = _context.Games.ToList();
+            List<Game> games = await (from game in _context.Games
+                                      select game)
+                                      .Skip(NumGamesToDisplayPerPage * (currPage - PageOffSet))
+                                      .Take(NumGamesToDisplayPerPage)
+                                      .ToListAsync();
 
             return View(games);
         }
